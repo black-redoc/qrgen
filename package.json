@@ -2,7 +2,7 @@
 	"name": "qr_gen",
 	"version": "1.0.0",
 	"description": "",
-	"main": "index.js",
+	"main": "server.js",
 	"scripts": {
 		"test": "vitest",
 		"test:run": "vitest run",
@@ -20,7 +20,7 @@
 		"docker:up": "docker-compose up -d",
 		"docker:down": "docker compose down",
 		"docker:logs": "docker compose logs -f",
-		"prepare": "husky"
+		"prepare": "if [ \"$NODE_ENV\" != \"production\" ]; then husky; fi"
 	},
 	"keywords": [],
 	"author": "",
@@ -29,7 +29,6 @@
 	"dependencies": {
 		"canvas": "^3.1.2",
 		"cookie-parser": "^1.4.7",
-		"crypto": "^1.0.1",
 		"express": "^5.1.0",
 		"express-session": "^1.18.2",
 		"jsdom": "^26.1.0",

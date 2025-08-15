@@ -3,7 +3,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import session from 'express-session';
 import cookieParser from 'cookie-parser';
-import { randomBytes } from 'crypto';
+import { randomBytes } from 'node:crypto';
 import qrGenerators from './qrGenerators.js';
 
 const __filename = fileURLToPath(import.meta.url);
