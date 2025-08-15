@@ -77,6 +77,44 @@ To run in development mode with automatic reload:
 npm run dev
 ```
 
+### Docker Deployment
+
+#### Using Docker
+
+1. **Build the Docker image**
+
+    ```bash
+    docker build -t qr-generator .
+    ```
+
+2. **Run the container**
+
+    ```bash
+    docker run -p 3000:3000 qr-generator
+    ```
+
+#### Using Docker Compose
+
+1. **Start the application**
+
+    ```bash
+    docker-compose up -d
+    ```
+
+2. **Stop the application**
+
+    ```bash
+    docker-compose down
+    ```
+
+The Docker setup includes:
+
+- Optimized Alpine Linux base image
+- All required system dependencies for Canvas and SVG processing
+- Non-root user for security
+- Health checks for container monitoring
+- Production-ready configuration
+
 ## 🎨 Usage
 
 ### Web Interface
@@ -239,6 +277,9 @@ qr_gen/
 ├── .prettierrc           # Prettier configuration with tabs
 ├── .prettierignore       # Files ignored by Prettier
 ├── .gitignore           # Files ignored by Git
+├── Dockerfile           # Container configuration
+├── .dockerignore        # Docker build context exclusions
+├── docker-compose.yml   # Docker Compose configuration
 └── CLAUDE.md            # Instructions for Claude Code
 ```
 
@@ -265,6 +306,13 @@ qr_gen/
 - **Favicon Optimization**: Optimized PNG to ICO conversion
 - **SVG Processing**: DOM manipulation for vector composition
 - **Canvas Composition**: Complex image generation with titles
+
+#### Deployment
+
+- **Docker**: Multi-stage Alpine-based container with system dependencies
+- **Docker Compose**: Production-ready orchestration configuration
+- **Health Checks**: Container monitoring and automatic restart
+- **Security**: Non-root user execution and optimized image layers
 
 ## 🤝 Contributing
 

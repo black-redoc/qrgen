@@ -16,6 +16,10 @@
 		"format:check": "prettier --check .",
 		"code:check": "npm run lint && npm run format:check",
 		"code:fix": "npm run lint:fix && npm run format",
+		"docker:build": "./scripts/docker-build.sh",
+		"docker:up": "docker-compose up -d",
+		"docker:down": "docker compose down",
+		"docker:logs": "docker compose logs -f",
 		"prepare": "husky"
 	},
 	"keywords": [],

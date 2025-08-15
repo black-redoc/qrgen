@@ -104,3 +104,28 @@ This is a QR code generator web application with the following key components:
 - SVG composition uses JSDOM for DOM manipulation
 - Scaling issues are handled with enhanced scale factors (minimum 2x)
 - Canvas and SVG composition strategies are separate but consistent
+
+## Docker Configuration
+
+### Container Setup
+
+- **Base Image**: Node.js 18 Alpine for optimal size and security
+- **System Dependencies**: All required packages for Canvas, JSDOM, and image processing
+- **Security**: Non-root user execution (qrgen:nodejs)
+- **Health Checks**: Automatic container monitoring with wget
+
+### Docker Commands
+
+- `npm run docker:build` - Build Docker image with interactive script
+- `npm run docker:up` - Start application with Docker Compose
+- `npm run docker:down` - Stop Docker Compose services
+- `npm run docker:logs` - View container logs in real-time
+- `./scripts/docker-build.sh [tag] [port]` - Advanced build script with options
+
+### Production Deployment
+
+- Uses Alpine Linux for minimal attack surface
+- Includes all Canvas system dependencies (cairo, pango, jpeg, etc.)
+- Optimized .dockerignore for faster builds
+- Health checks ensure container reliability
+- Ready for Kubernetes, Docker Swarm, or standalone deployment
