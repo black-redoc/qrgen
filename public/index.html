@@ -1,0 +1,541 @@
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Generador de Códigos QR</title>
+		<link rel="icon" type="image/x-icon" href="favicon.ico" />
+		<link rel="icon" type="image/png" sizes="32x32" href="favicon-optimized.png" />
+		<link rel="apple-touch-icon" sizes="180x180" href="favicon.png" />
+		<link rel="stylesheet" href="styles.css" />
+	</head>
+	<body>
+		<div class="container">
+			<h1>Generador de Códigos QR</h1>
+
+			<form id="qr-form">
+				<div class="form-group">
+					<label for="text">Texto o URL:</label>
+					<textarea
+						id="text"
+						name="text"
+						placeholder="Ingresa el texto o URL para generar el código QR"
+						required
+					></textarea>
+				</div>
+
+				<div class="form-group">
+					<label for="format">Formato:</label>
+					<select id="format" name="format">
+						<option value="png">PNG</option>
+						<option value="jpg">JPG</option>
+						<option value="svg">SVG</option>
+						<option value="base64">Base64</option>
+					</select>
+				</div>
+
+				<div class="advanced-section">
+					<div class="advanced-header" onclick="toggleAdvanced()">
+						<span>Opciones Avanzadas</span>
+						<span class="dropdown-arrow" id="dropdown-arrow">▼</span>
+					</div>
+
+					<div class="advanced-content" id="advanced-content">
+						<div class="form-group">
+							<label for="size">Tamaño (px):</label>
+							<input
+								type="range"
+								id="size"
+								name="size"
+								min="100"
+								max="600"
+								value="256"
+								step="50"
+							/>
+							<span class="range-value" id="size-value">256px</span>
+						</div>
+
+						<div class="form-group">
+							<label for="errorLevel">Nivel de corrección de errores:</label>
+							<select id="errorLevel" name="errorLevel">
+								<option value="L">Bajo (L) - ~7%</option>
+								<option value="M" selected>Medio (M) - ~15%</option>
+								<option value="Q">Alto (Q) - ~25%</option>
+								<option value="H">Muy Alto (H) - ~30%</option>
+							</select>
+						</div>
+
+						<div class="form-group">
+							<label for="margin">Margen:</label>
+							<input
+								type="range"
+								id="margin"
+								name="margin"
+								min="0"
+								max="8"
+								value="4"
+								step="1"
+							/>
+							<span class="range-value" id="margin-value">4</span>
+						</div>
+
+						<div class="color-group">
+							<div class="form-group">
+								<label for="darkColor">Color oscuro:</label>
+								<input
+									type="color"
+									id="darkColor"
+									name="darkColor"
+									value="#000000"
+								/>
+							</div>
+
+							<div class="form-group">
+								<label for="lightColor">Color claro:</label>
+								<input
+									type="color"
+									id="lightColor"
+									name="lightColor"
+									value="#FFFFFF"
+								/>
+							</div>
+						</div>
+
+						<div class="form-group" id="quality-group">
+							<label for="quality">Calidad (JPG):</label>
+							<input
+								type="range"
+								id="quality"
+								name="quality"
+								min="0.1"
+								max="1"
+								value="0.92"
+								step="0.05"
+							/>
+							<span class="range-value" id="quality-value">0.92</span>
+						</div>
+
+						<div class="personalization-section">
+							<h4>Personalización</h4>
+
+							<div class="form-group">
+								<label for="title">Título personalizado:</label>
+								<input
+									type="text"
+									id="title"
+									name="title"
+									placeholder="Ej: Mi código QR"
+									maxlength="50"
+								/>
+							</div>
+
+							<div class="form-group">
+								<label for="titlePosition">Posición del título:</label>
+								<select id="titlePosition" name="titlePosition">
+									<option value="top">Arriba</option>
+									<option value="bottom" selected>Abajo</option>
+								</select>
+							</div>
+
+							<div class="title-style-group">
+								<div class="form-group">
+									<label for="titleSize">Tamaño del título:</label>
+									<input
+										type="range"
+										id="titleSize"
+										name="titleSize"
+										min="12"
+										max="48"
+										value="24"
+										step="2"
+									/>
+									<span class="range-value" id="titleSize-value">24px</span>
+								</div>
+
+								<div class="form-group">
+									<label for="titleColor">Color del título:</label>
+									<input
+										type="color"
+										id="titleColor"
+										name="titleColor"
+										value="#333333"
+									/>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label for="titleFont">Fuente del título:</label>
+								<select id="titleFont" name="titleFont">
+									<option value="Arial">Arial</option>
+									<option value="Helvetica">Helvetica</option>
+									<option value="Times New Roman">Times New Roman</option>
+									<option value="Georgia">Georgia</option>
+									<option value="Verdana">Verdana</option>
+									<option value="Courier New">Courier New</option>
+								</select>
+							</div>
+
+							<div class="form-group">
+								<label for="backgroundColor">Color de fondo de la imagen:</label>
+								<input
+									type="color"
+									id="backgroundColor"
+									name="backgroundColor"
+									value="#FFFFFF"
+								/>
+							</div>
+
+							<div class="form-group">
+								<label for="imagePadding">Espaciado interno:</label>
+								<input
+									type="range"
+									id="imagePadding"
+									name="imagePadding"
+									min="10"
+									max="60"
+									value="20"
+									step="5"
+								/>
+								<span class="range-value" id="imagePadding-value">20px</span>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<button type="submit" class="generate-btn">Generar Código QR</button>
+			</form>
+
+			<div id="loading" class="loading hidden">
+				<div class="animated-qr">
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+						<rect
+							x="0"
+							y="0"
+							width="256"
+							height="256"
+							style="fill: #ffffff; shape-rendering: crispEdges"
+						/>
+						<rect
+							x="0"
+							y="0"
+							width="12.19"
+							height="12.19"
+							style="fill: #667eea; shape-rendering: crispEdges"
+						/>
+						<rect
+							x="12.19"
+							y="0"
+							width="12.19"
+							height="12.19"
+							style="fill: #667eea; shape-rendering: crispEdges"
+						/>
+						<rect
+							x="24.38"
+							y="0"
+							width="12.19"
+							height="12.19"
+							style="fill: #667eea; shape-rendering: crispEdges"
+						/>
+						<rect
+							x="36.57"
+							y="0"
+							width="12.19"
+							height="12.19"
+							style="fill: #667eea; shape-rendering: crispEdges"
+						/>
+						<rect
+							x="48.76"
+							y="0"
+							width="12.19"
+							height="12.19"
+							style="fill: #667eea; shape-rendering: crispEdges"
+						/>
+						<rect
+							x="60.95"
+							y="0"
+							width="12.19"
+							height="12.19"
+							style="fill: #667eea; shape-rendering: crispEdges"
+						/>
+						<rect
+							x="73.14"
+							y="0"
+							width="12.19"
+							height="12.19"
+							style="fill: #667eea; shape-rendering: crispEdges"
+						/>
+						<rect
+							x="97.52"
+							y="0"
+							width="12.19"
+							height="12.19"
+							style="fill: #667eea; shape-rendering: crispEdges"
+						/>
+						<rect
+							x="109.71"
+							y="0"
+							width="12.19"
+							height="12.19"
+							style="fill: #667eea; shape-rendering: crispEdges"
+						/>
+						<rect
+							x="134.10"
+							y="0"
+							width="12.19"
+							height="12.19"
+							style="fill: #667eea; shape-rendering: crispEdges"
+						/>
+						<rect
+							x="170.67"
+							y="0"
+							width="12.19"
+							height="12.19"
+							style="fill: #667eea; shape-rendering: crispEdges"
+						/>
+						<rect
+							x="182.86"
+							y="0"
+							width="12.19"
+							height="12.19"
+							style="fill: #667eea; shape-rendering: crispEdges"
+						/>
+						<rect
+							x="195.05"
+							y="0"
+							width="12.19"
+							height="12.19"
+							style="fill: #667eea; shape-rendering: crispEdges"
+						/>
+						<rect
+							x="207.24"
+							y="0"
+							width="12.19"
+							height="12.19"
+							style="fill: #667eea; shape-rendering: crispEdges"
+						/>
+						<rect
+							x="219.43"
+							y="0"
+							width="12.19"
+							height="12.19"
+							style="fill: #667eea; shape-rendering: crispEdges"
+						/>
+						<rect
+							x="231.62"
+							y="0"
+							width="12.19"
+							height="12.19"
+							style="fill: #667eea; shape-rendering: crispEdges"
+						/>
+						<rect
+							x="243.81"
+							y="0"
+							width="12.19"
+							height="12.19"
+							style="fill: #667eea; shape-rendering: crispEdges"
+						/>
+						<rect
+							x="0"
+							y="12.19"
+							width="12.19"
+							height="12.19"
+							style="fill: #667eea; shape-rendering: crispEdges"
+						/>
+						<rect
+							x="73.14"
+							y="12.19"
+							width="12.19"
+							height="12.19"
+							style="fill: #667eea; shape-rendering: crispEdges"
+						/>
+						<rect
+							x="134.10"
+							y="12.19"
+							width="12.19"
+							height="12.19"
+							style="fill: #667eea; shape-rendering: crispEdges"
+						/>
+						<rect
+							x="170.67"
+							y="12.19"
+							width="12.19"
+							height="12.19"
+							style="fill: #667eea; shape-rendering: crispEdges"
+						/>
+						<rect
+							x="243.81"
+							y="12.19"
+							width="12.19"
+							height="12.19"
+							style="fill: #667eea; shape-rendering: crispEdges"
+						/>
+						<rect
+							x="0"
+							y="24.38"
+							width="12.19"
+							height="12.19"
+							style="fill: #667eea; shape-rendering: crispEdges"
+						/>
+						<rect
+							x="24.38"
+							y="24.38"
+							width="12.19"
+							height="12.19"
+							style="fill: #667eea; shape-rendering: crispEdges"
+						/>
+						<rect
+							x="36.57"
+							y="24.38"
+							width="12.19"
+							height="12.19"
+							style="fill: #667eea; shape-rendering: crispEdges"
+						/>
+						<rect
+							x="48.76"
+							y="24.38"
+							width="12.19"
+							height="12.19"
+							style="fill: #667eea; shape-rendering: crispEdges"
+						/>
+						<rect
+							x="73.14"
+							y="24.38"
+							width="12.19"
+							height="12.19"
+							style="fill: #667eea; shape-rendering: crispEdges"
+						/>
+						<rect
+							x="97.52"
+							y="24.38"
+							width="12.19"
+							height="12.19"
+							style="fill: #667eea; shape-rendering: crispEdges"
+						/>
+						<rect
+							x="121.90"
+							y="24.38"
+							width="12.19"
+							height="12.19"
+							style="fill: #667eea; shape-rendering: crispEdges"
+						/>
+						<rect
+							x="170.67"
+							y="24.38"
+							width="12.19"
+							height="12.19"
+							style="fill: #667eea; shape-rendering: crispEdges"
+						/>
+						<rect
+							x="195.05"
+							y="24.38"
+							width="12.19"
+							height="12.19"
+							style="fill: #667eea; shape-rendering: crispEdges"
+						/>
+						<rect
+							x="207.24"
+							y="24.38"
+							width="12.19"
+							height="12.19"
+							style="fill: #667eea; shape-rendering: crispEdges"
+						/>
+						<rect
+							x="219.43"
+							y="24.38"
+							width="12.19"
+							height="12.19"
+							style="fill: #667eea; shape-rendering: crispEdges"
+						/>
+						<rect
+							x="243.81"
+							y="24.38"
+							width="12.19"
+							height="12.19"
+							style="fill: #667eea; shape-rendering: crispEdges"
+						/>
+						<!-- Continue with more rectangles from the SVG, but shortened for brevity -->
+						<rect
+							x="0"
+							y="243.81"
+							width="12.19"
+							height="12.19"
+							style="fill: #667eea; shape-rendering: crispEdges"
+						/>
+						<rect
+							x="12.19"
+							y="243.81"
+							width="12.19"
+							height="12.19"
+							style="fill: #667eea; shape-rendering: crispEdges"
+						/>
+						<rect
+							x="24.38"
+							y="243.81"
+							width="12.19"
+							height="12.19"
+							style="fill: #667eea; shape-rendering: crispEdges"
+						/>
+						<rect
+							x="36.57"
+							y="243.81"
+							width="12.19"
+							height="12.19"
+							style="fill: #667eea; shape-rendering: crispEdges"
+						/>
+						<rect
+							x="48.76"
+							y="243.81"
+							width="12.19"
+							height="12.19"
+							style="fill: #667eea; shape-rendering: crispEdges"
+						/>
+						<rect
+							x="60.95"
+							y="243.81"
+							width="12.19"
+							height="12.19"
+							style="fill: #667eea; shape-rendering: crispEdges"
+						/>
+						<rect
+							x="73.14"
+							y="243.81"
+							width="12.19"
+							height="12.19"
+							style="fill: #667eea; shape-rendering: crispEdges"
+						/>
+						<rect
+							x="146.29"
+							y="243.81"
+							width="12.19"
+							height="12.19"
+							style="fill: #667eea; shape-rendering: crispEdges"
+						/>
+						<rect
+							x="182.86"
+							y="243.81"
+							width="12.19"
+							height="12.19"
+							style="fill: #667eea; shape-rendering: crispEdges"
+						/>
+					</svg>
+				</div>
+				<div class="modern-spinner"></div>
+				<div class="loading-text">Generando código QR...</div>
+			</div>
+
+			<div id="result" class="result hidden">
+				<h2>Tu código QR:</h2>
+				<div id="qr-display"></div>
+				<div class="download-actions">
+					<button id="download-btn" class="download-btn">Descargar</button>
+					<button id="copy-btn" class="copy-btn">Copiar</button>
+				</div>
+			</div>
+
+			<div id="error" class="error hidden"></div>
+		</div>
+
+		<script src="formatHandlers.js"></script>
+		<script src="script.js"></script>
+	</body>
+</html>
