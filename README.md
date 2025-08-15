@@ -328,6 +328,6 @@ npx playwright install
 
 ⭐ If you find this project useful, consider giving it a star on GitHub!
 
-📫 **Contact**: [joseb.twele@gmail.com](mailto:joseb.twele@gmail.com)
+📫 **Contact**: [joseb.twelve@gmail.com](mailto:joseb.twelve@gmail.com)
 🐛 **Report Bugs**: [GitHub Issues](https://github.com/black-redoc/qrgen/issues)
 💡 **Request Features**: [GitHub Discussions](https://github.com/black-redoc/qrgen/discussions)
